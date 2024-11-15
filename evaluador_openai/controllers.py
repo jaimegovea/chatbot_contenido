@@ -510,7 +510,7 @@ def generate_rubric(dict, api_key):
             - Piensa profundamente acerca de tu materia asignada detallada en el diccionario
             - Analiza los objetivos de aprendizaje que se encuentran en la llave "objectives"
             - Con base en los objetivos de aprendizaje debes generar 3 rúbricas, una para informes, una para ensayos y una para ejercicios prácticos
-            - Cada rúbrica debe contar con 4 criterios de evaluación y 4 calificaciones, que son excelente con 4 puntos, muy bueno con 3 puntos, regular con 2 puntos e insuficiente con 1 punto
+            - Cada rúbrica debe contar con 5 criterios de evaluación y 4 calificaciones, que son excelente con 4 puntos, muy bueno con 3 puntos, regular con 2 puntos e insuficiente con 1 punto
             # Salida
             - Devuelve la salida en un formato de diccionario de python, únicamente el diccionario, sin ninguna palabra ni caracter antes o despues
             - El diccionario debe tener los siguientes campos:
