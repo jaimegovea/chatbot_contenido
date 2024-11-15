@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+{% block body %}
+<div class="container-fluid text-left">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <a href="{% url 'videos' %}"><- Todos los videos</a>
+            <h2>Ingrese la fecha</h2>
+            <form action="{% url 'video_report' %}" method="post">
+                {% csrf_token %}
+                <label for="date" class="form-label my-1">Fecha</label>
+                <input type="date" name="date" class="form-control" required>
+                <button type="submit" class="btn btn-primary mt-2" id="submitBtn">Generar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

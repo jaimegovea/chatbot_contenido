@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+{% block body %}
+<div class="container-fluid text-left">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <a href="{% url 'rubrics' %}"><- Todas las rúbricas</a>
+            <h2>Ingrese sus datos</h2>
+            <form action="{% url 'rubric_edit' rubric_id=rubric.id %}" method="post">
+                {% csrf_token %}
+                <label for="name" class="form-label mt-1">Nombre de la rúbrica</label>
+                <input type="text" name="name" class="form-control" value="{{ rubric.name }}" required>
+                <label for="content" class="form-label mt-1">Rúbrica</label>
+                <textarea name="content" id="rubricArea" rows="15" class="form-control">{{ rubric.content }}</textarea>
+                <button type="submit" class="btn btn-primary mt-2" id="submitBtn">Editar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

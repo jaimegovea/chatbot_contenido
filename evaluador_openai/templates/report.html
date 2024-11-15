@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% block body %}
+<div class="container-fluid text-left">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <h2>Ingrese la fecha</h2>
+            <form action="{{ url_for('report_page') }}" method="post">
+                <label for="date" class="form-label my-1">Fecha</label>
+                <input type="date" name="date" class="form-control" required>
+                <button type="submit" name="action" value="essays" class="btn btn-success mt-2" id="submitBtn">Ensayos</button>
+                <button type="submit" name="action" value="videos" class="btn btn-primary mt-2" id="submitBtn">Videos</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

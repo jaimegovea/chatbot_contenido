@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluador OpenAI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"
+        integrity="sha512-oQq8uth41D+gIH/NJvSJvVB85MFk1eWpMK6glnkg6I7EdMqC1XVkW7RxLheXwmFdG03qScCM7gKS/Cx3FYt7Tg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css"
+        integrity="sha512-WvVX1YO12zmsvTpUQV8s7ZU98DnkaAokcciMZJfnNWyNzm7//QRV61t4aEr0WdIa4pe854QHLTV302vH92FSMw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href=#>Evaluador</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto">
+                    {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'rubrics' %}">Rubricas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'essays' %}">Ensayos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'assignments' %}">Tareas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'videos' %}">Videos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'syllabus' %}">Sílabos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'questionnaires' %}">Cuestionarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'logout_user' %}">Cerrar sesión</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'login_user' %}">Iniciar sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'register' %}">Registro</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row justify-content-center mt-2">
+            <div class="col-6">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                        {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% block body %}
+    {% endblock %}
+</body>
+
+</html>

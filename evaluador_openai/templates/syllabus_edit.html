@@ -1,0 +1,34 @@
+{% extends 'index.html' %}
+{% block body %}
+{% load static %}
+<div class="container-fluid text-left">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <a href="{% url 'syllabus' %}"><- Todos los sílabos</a>
+                    <h2>Ingrese los datos</h2>
+                    <form action="{% url 'syllabus_edit' syllabus_id=syllabus.id %}" method="post">
+                        {% csrf_token %}
+                        <label for="subject" class="form-label mt-1">Materia</label>
+                        <input name="subject" type="text" class="form-control" id="subject"
+                            value="{{ syllabus.subject }}" required>
+                        <label for="description" class="form-label mt-1">RDAs</label>
+                        <textarea name="rda" id="description" cols="30" rows="5"
+                            class="form-control">{{ syllabus.rda }}</textarea>
+                        <label for="description" class="form-label mt-1">Descripción</label>
+                        <textarea name="description" id="description" cols="30" rows="5"
+                            class="form-control">{{ syllabus.description }}</textarea>
+                        <label for="sessions" class="form-label mt-1"># de sesiones</label>
+                        <input name="sessions" type="number" class="form-control" id="sessions"
+                            value="{{ syllabus.sessions }}" required>
+                        <button type="submit" class="btn btn-primary my-2" id="submitBtn">Generar</button>
+                    </form>
+                    <div class="text-center visually-hidden" id="spinnerLoader">
+                        <div class="spinner-border text-primary" role="status">
+                        </div>
+                        <br>
+                        <span>Generando</span>
+                    </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

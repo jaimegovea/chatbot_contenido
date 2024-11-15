@@ -1,0 +1,64 @@
+{% extends 'index.html' %}
+{% block body %}
+{% load static %}
+<div class="modal" tabindex="-1" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Llave de OpenAI incorrecta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mt-2">
+                    <div class="input-group-prepend">
+                        <label for="api_key" class="input-group-text">Llave de OpenAI</label>
+                    </div>
+                    <input type="password" name="api_key" class="form-control" id="api_key" required>
+                    <div class="input-group-append">
+                        <button id="apiKeyIcon" class="btn btn-outline-secondary" type="button">
+                            <i class="bi bi-eye-slash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="saveBtn">Guardar
+                    Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid text-left">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <a href="{% url 'questionnaires' %}"><- Todos las cuestionarios</a>
+                    <h2>Ingrese los datos</h2>
+                    <form action="{% url 'questionnaire_edit' questionnaire_id=questionnaire.id %}" method="post">
+                        {% csrf_token %}
+                        <label for="subject" class="form-label mt-1">Materia</label>
+                        <input name="subject" type="text" class="form-control" id="subject"
+                            value="{{ questionnaire.subject }}" required>
+                        <label for="topics" class="form-label">Temas:</label>
+                        <textarea name="topics" class="form-control" cols="30"
+                            rows="5">{{ questionnaire.topics }}</textarea>
+                        <label for="questions" class="form-label mt-1"># preguntas</label>
+                        <input name="questions" type="number" class="form-control" id="questions"
+                            value="{{ questionnaire.questions }}" required>
+                        <button type="submit" class="btn btn-primary my-2" id="submitBtn">Generar</button>
+
+                    </form>
+
+                    <div class="text-center visually-hidden" id="spinnerLoader">
+                        <div class="spinner-border text-primary" role="status">
+                        </div>
+                        <br>
+                        <span>Generando</span>
+                    </div>
+        </div>
+    </div>
+    <div class="row justify-content-center" id="questionnaireRow">
+    </div>
+</div>
+<script src={% static 'scripts/questionnaire.js' %}></script>
+{% endblock %}

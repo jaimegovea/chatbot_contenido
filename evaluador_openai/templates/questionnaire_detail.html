@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+{% block body %}
+<div class="container-fluid text-left">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <a href="{% url 'questionnaires' %}"><- Todos los cuestionarios</a>
+                    <h2 class="my-2">{{ questionnaire.subject }}</h2>
+                    <h4 class="my-2">Temas</h4>
+                    <p class="detail-body">{{ questionnaire.topics}}</p>
+                    <h4 class="my-2">Contenido</h4>
+                    <p class="detail-body">{{ questionnaire.content }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

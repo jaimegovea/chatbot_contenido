@@ -1,0 +1,21 @@
+.cardTransition {
+    transition: all 1s;
+}
+
+.card-text {
+    white-space: pre-wrap;
+}
+
+.detail-body {
+    white-space: pre-wrap;
+}
+
+#dropzone {
+    border-style: dashed;
+    border-color: lightblue;
+    border-radius: 5%;
+    height: 10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

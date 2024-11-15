@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+{% block body %}
+{% load static %}
+<div class="container-fluid text-left">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            {% if request.user.is_authenticated %}
+            {{ request.user.username }}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

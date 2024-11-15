@@ -1,0 +1,33 @@
+{% extends 'index.html' %}
+{% block body %}
+<div class="container-fluid text-left">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <a href="{% url 'syllabus' %}"><- Todos los sílabos</a>
+            <form action="{% url 'syllabus_detail' syllabus_id=syllabus.id  %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary my-2" id="submitBtn">Generar reporte</button>
+            </form>
+            <form action="{% url 'new_lab_guide' syllabus_id=syllabus.id  %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success my-2" id="submitBtn">Generar guía de laboratorio</button>
+            </form>
+            <form action="{% url 'new_rubric_dict' syllabus_id=syllabus.id  %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success my-2" id="submitBtn">Generar rúbrica</button>
+            </form>
+            <form action="{% url 'new_pptx_dict' syllabus_id=syllabus.id  %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success my-2" id="submitBtn">Generar presentaciones</button>
+            </form>
+            <h2 class="my-2">{{ syllabus.subject }}</h2>
+            <h4 class="my-2">RDAs</h4>
+            <p class="detail-body">{{ syllabus.rda }}</p>
+            <h4 class="my-2">Descripción</h4>
+            <p class="detail-body">{{ syllabus.description }}</p>
+            <h4 class="my-2">Contenido</h4>
+            <p class="detail-body">{{ content }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

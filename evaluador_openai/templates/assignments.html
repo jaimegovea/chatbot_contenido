@@ -1,0 +1,30 @@
+{% extends 'index.html' %}
+{% block body %}
+<div class="container-fluid text-left">
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <h1 class="my-1">Tareas</h1>
+      <a href="{% url 'new_assignment' %}" class="btn btn-success">Evaluar tareas</a>
+      <a href="{% url 'assignment_report' %}" class="btn btn-primary">Generar reporte</a>
+      {% for a in assignments %}
+      <div class="card my-2">
+        <div class="card-header d-flex justify-content-between">
+          <h5>{{ a.file_name }}</h5>
+          <h5> {{ a.date }}</h5>
+        </div>
+        <div class="card-body">
+          
+          <a href="{% url 'assignment_detail' assignment_id=a.id  %}" class="btn btn-primary"><i class="bi bi-search"></i></a>
+          <form action="{% url 'assignment_delete' assignment_id=a.id  %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+          </form>
+          <a href="{% url 'assignment_edit' assignment_id=a.id  %}" class="btn btn-warning">Recalificar<i
+              class="bi bi-arrow-clockwise"></i></a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

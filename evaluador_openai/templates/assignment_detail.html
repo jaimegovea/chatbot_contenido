@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+{% block body %}
+<div class="container-fluid text-left">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <a href="{% url 'assignments' %}"><- Todas las tareas</a>
+                    <h2 class="my-2">{{ assignment.file_name }}</h2>
+                    <h4 class="my-2">Rúbrica utilizada: {{ assignment.criteria_name }}</h4>
+                    <h4 class="my-2">Descripción: {{ assignment.description }}</h4>
+                    <p class="detail-body">{{ assignment.analysis }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

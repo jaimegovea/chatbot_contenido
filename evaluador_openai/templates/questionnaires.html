@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+{% block body %}
+<div class="container-fluid text-left">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <h1 class="my-1">Cuestionarios</h1>
+            <a href="{% url 'new_questionnaire' %}" class="btn btn-success">Generar cuestionario</a>
+            <a href="{% url 'questionnaire_report' %}" class="btn btn-primary">Generar reporte</a>
+            {% for q in questionnaires %}
+            <div class="card my-2">
+                <div class="card-header justify-content-between d-flex">
+                    <h5>{{ q.subject}}</h5>
+                    <h5>{{ q.date }}</h5>
+                </div>
+                <div class="card-body">
+                    
+                    <a href="{% url 'questionnaire_detail' questionnaire_id=q.id  %}" class="btn btn-primary"><i
+                            class="bi bi-search"></i></a>
+                    <form action="{% url 'questionnaire_delete' questionnaire_id=q.id  %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                    </form>
+                    <a href="{% url 'questionnaire_edit' questionnaire_id=q.id  %}" class="btn btn-warning">Re-generar<i
+                        class="bi bi-arrow-clockwise"></i></a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

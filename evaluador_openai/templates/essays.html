@@ -1,0 +1,30 @@
+{% extends 'index.html' %}
+{% block body %}
+<div class="container-fluid text-left">
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <h1 class="my-1">Ensayos</h1>
+      <a href="{% url 'new_essay' %}" class="btn btn-success">Evaluar ensayos</a>
+      <a href="{% url 'essay_report' %}" class="btn btn-primary">Generar reporte</a>
+      {% for e in essays %}
+      <div class="card my-2">
+        <div class="card-header justify-content-between d-flex">
+          <h5>{{ e.file_name }}</h5>
+          <h5>{{ e.date }}</h5>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <a href="{% url 'essay_detail' essay_id=e.id  %}" class="btn btn-primary"><i class="bi bi-search"></i></a>
+          <form action="{% url 'essay_delete' essay_id=e.id  %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+          </form>
+          <a href="{% url 'essay_edit' essay_id=e.id  %}" class="btn btn-warning">Recalificar<i
+              class="bi bi-arrow-clockwise"></i></a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

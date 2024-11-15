@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+{% block body %}
+<div class="container-fluid text-left">
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <h1 class="my-1">Videos</h1>
+      <a href="{% url 'new_video' %}" class="btn btn-success">Evaluar videos</a>
+      <a href="{% url 'video_report' %}" class="btn btn-primary">Generar reporte</a>
+      {% for v in videos %}
+      <div class="card my-2">
+        <div class="card-header d-flex justify-content-between">
+          <h5>{{ v.file_name }}</h5>
+          <h5>{{ v.date }}</h5>
+        </div>
+        <div class="card-body">
+          <a href="{% url 'video_detail' video_id=v.id  %}" class="btn btn-primary"><i class="bi bi-search"></i></a>
+          <form action="{% url 'video_delete' video_id=v.id  %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+          </form>
+          <a href="{% url 'video_edit' video_id=v.id  %}" class="btn btn-warning">Recalificar<i
+              class="bi bi-arrow-clockwise"></i></a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

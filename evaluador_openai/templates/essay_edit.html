@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+{% block body %}
+{% load static %}
+<div class="container-fluid text-left">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <a href="{% url 'essays' %}"><- Todos los ensayos</a>
+                    <h2>Ingrese los datos</h2>
+                    <form action="{% url 'essay_edit' essay_id=essay.id %}" method="post">
+                        {% csrf_token %}
+                        <label for="criteria" class="form-label mt-1">Criterio de evaluación</label>
+                        <select name="criteria" id="criteria" class="form-select">
+                            {% for rubric in rubrics %}
+                            <option value="{{ rubric.id }}" {% if rubric.id == essay.criteria.id %} selected {% endif %}>{{ rubric.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <label for="theme" class="form-label mt-1">Temática del ensayo</label>
+                        <input name="theme" type="text" class="form-control" id="theme" value="{{ essay.theme }}"
+                            required>
+                        <label class="form-label mt-1">Ensayo: {{ essay.file_name }}</label>
+                        <br>
+                        <button type="submit" class="btn btn-primary my-2" id="submitBtn">Re-evaluar</button>
+                    </form>
+                    <div class="text-center visually-hidden" id="spinnerLoader">
+                        <div class="spinner-border text-primary" role="status">
+                        </div>
+                        <br>
+                        <span>Analizando</span>
+                    </div>
+        </div>
+    </div>
+    <div class="row justify-content-center" id="essayRow">
+    </div>
+</div>
+<script src={% static 'scripts/review_essay.js' %}></script>
+{% endblock %}

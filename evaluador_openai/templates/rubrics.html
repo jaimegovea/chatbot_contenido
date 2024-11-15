@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+{% block body %}
+<div class="container-fluid text-left">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <h1 class="my-1">Rúbricas</h1>
+            <a href="{% url 'new_rubric' %}" class="btn btn-success">Nueva rúbrica</a>
+            {% for r in rubrics %}
+            <div class="card my-2">
+              <div class="card-header">
+                <h5>{{ r.name }}</h5>
+              </div>
+                <div class="card-body">
+                  <a href="{% url 'rubric_detail' rubric_id=r.id  %}" class="btn btn-primary"><i class="bi bi-search"></i></a>
+                  <a href="{% url 'rubric_edit' rubric_id=r.id  %}" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
+                  <form action="{% url 'rubric_delete' rubric_id=r.id  %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                  </form>
+                </div>
+              </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

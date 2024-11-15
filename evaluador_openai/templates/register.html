@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+{% block body %}
+{% load static %}
+<div class="container-fluid text-left">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <h2>Ingrese sus datos</h2>
+            <form action="{% url 'register' %}" method="post">
+                {% csrf_token %}
+                <div class="input-group mt-2 ">
+                    <div class="input-group-prepend">
+                        <label for="username" class="input-group-text">Nombre de usuario</label>
+                    </div>
+                    <input type="text" name="username" class="form-control" required>
+                </div>      
+                <div class="input-group mt-2">
+                    <div class="input-group-prepend">
+                        <label for="password" class="input-group-text">Contraseña</label>
+                    </div>
+                    <input type="password" name="password" class="form-control" id="password" required>
+                    <div class="input-group-append">
+                        <button id="passwordIcon" class="btn btn-outline-secondary" type="button">
+                            <i class="bi bi-eye-slash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="input-group mt-2">
+                    <div class="input-group-prepend">
+                        <label for="api_key" class="input-group-text">Llave de OpenAI</label>
+                    </div>
+                    <input type="password" name="api_key" class="form-control" id="api_key" required>
+                    <div class="input-group-append">
+                        <button id="apiKeyIcon" class="btn btn-outline-secondary" type="button">
+                            <i class="bi bi-eye-slash"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-2" id="submitBtn">Registrar</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src={% static 'scripts/register.js' %}></script>
+{% endblock %}

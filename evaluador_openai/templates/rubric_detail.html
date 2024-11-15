@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+{% block body %}
+<div class="container-fluid text-left">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <a href="{% url 'rubrics' %}"><- Todas las rúbricas</a>
+                    <h2>{{ rubric.name }}</h2>
+                    <p class="detail-body">{{ rubric.content }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
