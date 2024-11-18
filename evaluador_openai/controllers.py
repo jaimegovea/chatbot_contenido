@@ -179,7 +179,9 @@ def generate_syllabus(subject, rda, description, sessions, api_key):
             - Piensa profundamente acerca de tu materia asignada: {subject}
             - Piensa profundamente acerca de los resultados de aprendizaje de los estudiantes: {rda}
             - Piensa profundamente en temas de la materia que estén dentro de la siguiente descripción {description}
-            - Debes dividir la clase en {sessions} sesiones, piensa en un tema de suma importancia para la materia en cada sesión.
+            - Debes dividir la clase con base en los créditos {sessions}, debes multiplicar los créditos por 4 y eso te da el número total de sesiones, los créditos determinan cuantas clases hay por semana, es decir, 2 creditos indican 2 clases por semana.
+            - Se debe tratar una unidad por semana y tener un tema para cada clase dentro de esa unidad.
+            - Cada tema debe estar ligado a un resultado de aprendizaje.
             - Cada tema es tratado en 3 sesiones: la pre-sesión, consta de aprendizaje autónomo previo a la clase; sesión, actividades durante la clase y post-sesión, tareas para después de la clase. 
             - Determina una actividad para cada sesión.
             - Asigna una descripción entre 10 y 15 palabras para la actividad.
@@ -192,7 +194,9 @@ def generate_syllabus(subject, rda, description, sessions, api_key):
             - "description" es la descripción de la materia
             - "objectives" es una lista con los resultados de aprendizaje de la materia
             - "sessions" es una lista de diccionarios para cada sesión, estas sesiones deben estar compuestas por los siguientes campos:
+            - "unit" la unidad que se va a tratar en la semana.
             - "topic" es la temática de la sesión
+            - "rda" es el resultado de aprendizaje asociado al tema, por ejemplo 'rda1', 'rda2' o 'rda3'
             - "pre-session" es un diccionario con la actividad de clase, esta actividad debe tener un campo "description que indica que debe hacer el estudiante, un campo "estimated_time" el tiempo en minutos que tarda la actividad, "material" que es el material sugerido para la materia.
             - "session" es un diccionario con los mismos campos que pre-session
             - "post-session" es un dicctionario con los mismos campos que pre-session y session.
@@ -204,21 +208,23 @@ def generate_syllabus(subject, rda, description, sessions, api_key):
                 'Evalúa los resultados obtenidos de la analítica de datos e inteligencia artificial para sacar conclusiones, generar propuestas innovadoras y conocimiento en el campo de la ingeniería.', 
                 'Identifica, formula y resuelve problemas complejos de ingeniería mediante la aplicación de principios de ingeniería, ciencia y matemática.'], 
                 "sessions": [{{
+                                "unit": 'Fundamentos de Ciencia de Datos',
                                 "topic": 'Introducción a la Ciencia de Datos', 
+                                "rda": 'rda1',
                                 "pre-session":  {{
                                                 "description": 'Lectura sobre los fundamentos y aplicaciones de la ciencia de datos.', 
                                                 "estimated_time": '45 minutos',
-                                                "materials": 'Introducción a la Ciencia de Datos'
+                                                "material": 'Introducción a la Ciencia de Datos'
                                                 }}, 
                                 "session":  {{
                                                 "description": 'Discusión de conceptos clave y ejemplos aplicados de ciencia de datos.', 
                                                 "estimated_time": '60 minutos', 
-                                                "materials": 'Presentación sobre Ciencia de Datos'
+                                                "material": 'Presentación sobre Ciencia de Datos'
                                             }}, 
                                 "post-session": {{
                                                 "description": 'Elaborar un resumen de la importancia de la ciencia de datos.', 
                                                 "estimated_time": '30 minutos', 
-                                                "materials: 'Guía para el Resumen'
+                                                "material: 'Guía para el Resumen'
                                                 }}
                             }}]
             }}
@@ -228,7 +234,7 @@ def generate_syllabus(subject, rda, description, sessions, api_key):
     messages.append(
         {
             "role": "user",
-            "content": f"Genera un sílabo de {sessions} unidades para la materia: {subject}",
+            "content": f"Genera un sílabo de la siguiente materia: {subject}",
         }
     )
     client = openai.OpenAI(api_key=api_key)
