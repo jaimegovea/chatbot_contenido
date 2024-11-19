@@ -46,4 +46,8 @@ urlpatterns = [
     path("lab_guides/new/<int:syllabus_id>", views.new_lab_guide, name="new_lab_guide"),
     path("rubric_dict/new/<int:syllabus_id>", views.new_rubric_dict, name="new_rubric_dict"),
     path("pptx_dict/new/<int:syllabus_id>", views.new_pptx_dict, name="new_pptx_dict"),
+    path("syllabusapi", views.syllabusapi, name="syllabusapi"),
+    path("syllabusdocapi/<int:syllabus_id>", views.syllabusdocapi, name="syllabusdocapi"),
+    path("labguideapi/<int:syllabus_id>", views.new_lab_guide_api, name="new_lab_guide_api"),
+    path("rubricdicapi/<int:syllabus_id>", views.new_rubric_dict_api, name="new_rubric_dict_api")
 ]
