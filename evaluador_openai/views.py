@@ -767,3 +767,156 @@ def update_api_key(request):
         api_key.save()
         messages.success(request, "Llave de OpenAI actualizada")
         return JsonResponse({"success": True})
+## URLS API CHATBOT
+def syllabusapi(request):
+    if request.method == "POST":
+        api_key = Apikeys.objects.get(user_id=5)
+        subject = request.POST.get("subject", "")
+        rda = request.POST.get("rda", "")
+        description = request.POST.get("description", "")
+        sessions = request.POST.get("sessions", "")
+
+        # Ensure generate_syllabus returns JSON-serializable data
+        content = generate_syllabus(
+            subject=subject,
+            rda=rda,
+            description=description,
+            sessions=sessions,
+            api_key=api_key.api_key,
+        )
+
+        # Save the new syllabus
+        new_syllabus = Syllabus(
+            subject=subject,
+            rda=rda,
+            description=description,
+            sessions=sessions,
+            content=content,
+            user_id=5,
+            date=date.today(),
+        )
+        new_syllabus.save()
+
+        # Confirm creation with a JSON response
+        return JsonResponse({"id":new_syllabus.id,"message": content}, status=201)
+
+    # For GET requests, retrieve syllabus data and ensure it is JSON serializable
+    syllabus = list(Syllabus.objects.filter(user_id=request.user.id).values())
+
+    # Return JSON response with syllabus data
+    return JsonResponse(syllabus, safe=False)
+
+def syllabusdocapi(request, syllabus_id):
+    syllabus = Syllabus.objects.get(id=syllabus_id)
+    syllabus_dict = json.loads(syllabus.content)
+
+    # Generate the context for rendering the document
+    context = {
+        "course_name": syllabus_dict["course"],
+        "description": syllabus_dict["description"],
+        "rdas": syllabus_dict["objectives"],
+        "sessions": syllabus_dict["sessions"],
+    }
+
+    # Define the template path and the new report path
+    template_path = os.path.join("media", "reports", "syllabus_template.docx")
+    new_report_path = os.path.join("media", "reports", "syllabus.docx")
+
+    # Render the document with the context
+    doc = DocxTemplate(template_path)
+    doc.render(context)
+    doc.save(new_report_path)
+
+    # Open the newly generated document and prepare it for download
+    response = FileResponse(open(new_report_path, "rb"))
+    response["Content-Type"] = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    response["Content-Disposition"] = 'attachment; filename="syllabus.docx"'
+
+    # Return the file response for both GET and POST requests
+    return response
+
+def new_lab_guide_api(request, syllabus_id):
+    syllabus = Syllabus.objects.get(id=syllabus_id)
+    api_key = Apikeys.objects.get(user_id=5)
+    
+    # Genera las guías de laboratorio
+    lab_guides = generate_lab_guide(syllabus.content, api_key.api_key)
+    
+    # Verifica que lab_guides no esté vacío
+    if not lab_guides:
+        return JsonResponse({"error": "La generación de guías de laboratorio falló."}, status=500)
+    
+    try:
+        # Intenta cargar lab_guides como JSON
+        lab_guide_dict = json.loads(lab_guides)
+    except json.JSONDecodeError as e:
+        return JsonResponse({"error": f"Error de decodificación JSON: {str(e)}"}, status=500)
+    
+    new_lab_guide = LabGuides(
+        user_id=5,
+        syllabus=syllabus,
+        content=lab_guides,
+        date=date.today(),
+    )
+    new_lab_guide.save()
+
+    # Resto del código para generar y comprimir los documentos
+    lab_guide_list = []
+    for i in range(len(lab_guide_dict["sessions"])):
+        context = {
+            "course": lab_guide_dict["course"],
+            "workshop_name": lab_guide_dict["sessions"][i]["workshop_name"],
+            "objectives": lab_guide_dict["sessions"][i]["objectives"],
+            "rda": lab_guide_dict["sessions"][i]["rda"],
+            "introduction": lab_guide_dict["sessions"][i]["introduction"],
+            "materials": lab_guide_dict["sessions"][i]["materials"],
+            "methodology": lab_guide_dict["sessions"][i]["methodology"],
+            "references": lab_guide_dict["sessions"][i]["references"],
+            "annexes": lab_guide_dict["sessions"][i]["annexes"],
+        }
+        template_path = os.path.join("media", "reports", "lab_template.docx")
+        new_report_path = os.path.join("media", "reports", f"lab_guide_{i}.docx")
+        doc = DocxTemplate(template_path)
+        doc.render(context)
+        doc.save(new_report_path)
+        lab_guide_list.append(new_report_path)
+    
+    lab_guides_zip_path = os.path.join("media", "reports", "lab_guides.zip")
+    with zipfile.ZipFile(lab_guides_zip_path, "w") as zip:
+        for file in lab_guide_list:
+            zip.write(file)
+    
+    response = FileResponse(open(lab_guides_zip_path, "rb"))
+    response["Content-Type"] = "application/zip"
+    response["Content-Disposition"] = "attachment; filename=lab_guides.zip"
+    return response
+    
+
+def new_rubric_dict_api(request, syllabus_id):
+        syllabus = Syllabus.objects.get(id=syllabus_id)
+        api_key = Apikeys.objects.get(user_id=5)
+        rubric = generate_rubric(syllabus.content, api_key.api_key)
+        new_rubric = Rubrics(name=syllabus.subject, content=rubric, user_id=5)
+        new_rubric.save()
+        rubric_dict = json.loads(rubric)
+        rubric_list = []
+        for key in rubric_dict:
+            context = {
+                "content": rubric_dict[key]
+            }
+            template_path = os.path.join("media", "reports", "rubric_template.docx")
+            new_report_path = os.path.join("media", "reports", f"{key}_rubric.docx")
+            doc = DocxTemplate(template_path)
+            doc.render(context)
+            doc.save(new_report_path)
+            rubric_list.append(new_report_path)
+        lab_guides_zip_path = os.path.join("media", "reports", "lab_guides.zip")
+        with zipfile.ZipFile(lab_guides_zip_path, "w") as zip:
+            for file in rubric_list:
+                zip.write(file)
+        response = FileResponse(open(lab_guides_zip_path, "rb"))
+        response["Content-Type"] = (
+            "application/zip"
+        )
+        response["Content-Disposition"] = "attachment; filename=rubrics.zip"
+        return response
